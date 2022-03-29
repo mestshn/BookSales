@@ -6,11 +6,15 @@
       "Microsoft.Hosting.Lifetime": "Information"
     }
   },
-
+  "AllowedHosts": "*",
   "ConnectionStrings": {
     "BookSalesDBCon": "data source=45.200.120.200;initial catalog=BookSalesDB;user id=BookSales;password=4bnd30#Y;MultipleActiveResultSets=True;App=EntityFramework"
 
   },
 
-    "AllowedHosts": "*"
+  "ApplicationSettings": {
+    "JWT_Secret": "1234567890123456",
+    "Clien_URL": "http://localhost:4200"
   }
+
+}

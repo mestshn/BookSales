@@ -1,6 +1,7 @@
 ﻿using BookSalesWebServices.APIModel;
 using BookSalesWebServices.DataAccess;
 using BookSalesWebServices.DataAccess.EntityModel;
+using BookSalesWebServices.Helper;
 using BookSalesWebServices.Presenter;
 using System;
 using System.Linq;
@@ -15,9 +16,25 @@ namespace BookSalesWebServices.Business
             _context = context;
         }
 
-        public KullaniciAPIModel GetKullanici(string kullaniciAdi)
+        public KullaniciAPIModel GetKullanici(string kullaniciAdi, string sifre)
         {
-            KullaniciEntityModel entity = _context.KullaniciDbSet.FirstOrDefault(x => x.KullaniciAdi == kullaniciAdi);
+            KullaniciEntityModel entity = _context.KullaniciDbSet.FirstOrDefault(x => x.KullaniciAdi == kullaniciAdi && x.Sifre == CryptographyManager.MD5Encryp(sifre));
+            KullaniciAPIModel ret = new KullaniciAPIModel();
+            if (entity != null)
+            {
+                ret = KullaniciPresenter.EntityModelToAPIModel(entity);
+                ret.genericResult.IsOK = true;
+            }
+            else
+            {
+                ret.genericResult.IsOK = false;
+                ret.genericResult.Message = "Kullanıcı Bulunamadı.";
+            }
+            return ret;
+        }
+        public KullaniciAPIModel GetKullanici(int kullaniciID)
+        {
+            KullaniciEntityModel entity = _context.KullaniciDbSet.FirstOrDefault(x => x.KullaniciID == kullaniciID);
             KullaniciAPIModel ret = new KullaniciAPIModel();
             if (entity != null)
             {
@@ -32,6 +49,20 @@ namespace BookSalesWebServices.Business
             return ret;
         }
 
+        public GenericResult CheckKullanici(string kullaniciAdi)
+        {
+            KullaniciEntityModel entity = _context.KullaniciDbSet.FirstOrDefault(x => x.KullaniciAdi == kullaniciAdi);
+            GenericResult ret = new GenericResult();
+            if (entity != null)
+            {
+                ret.IsOK = true;
+            }
+            else
+            {
+                ret.IsOK = false;
+            }
+            return ret;
+        }
 
         public GenericResult Save(KullaniciAPIModel apiModel)
         {
@@ -47,7 +78,7 @@ namespace BookSalesWebServices.Business
             else
             {
                 KullaniciEntityModel kullanici = _context.KullaniciDbSet.FirstOrDefault(x => x.KullaniciAdi == entityModel.KullaniciAdi);
-                if (kullanici != null) 
+                if (kullanici != null)
                 {
                     return new GenericResult { IsOK = false, Message = "Kullanıcı Adı kullanımda" };
                 }
@@ -61,7 +92,6 @@ namespace BookSalesWebServices.Business
 
             return new GenericResult { IsOK = true };
         }
-
 
         public int? GetLoginUserID(string IdentityName)
         {

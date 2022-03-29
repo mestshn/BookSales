@@ -1,0 +1,124 @@
+<body class="wizard-body">
+    <div class="wizard-wrapper">
+        <div class="wizard-content">
+            <div class="wizard-card">
+                <div class="wizard-card-header">
+                    <div class="grid col">
+                        <div class="col-12 tab register-tab" [ngClass]="{'selected-tab': activeTab == 'register'}" (click)="clickNext('register')">
+                            <div class="icon">
+                                <i class="pi pi-sign-in"></i>
+                            </div>
+                            <div class="title">Kayıt Ol</div>
+                        </div>
+                        <div class="tab-bar" [@tabBar]="activeTab==='register'?'register':activeTab==='tier'?'tier':'payment'"></div>
+                    </div>
+                </div>
+                <div class="wizard-card-content register" [ngClass]="{'active-content': activeTab === 'register'}">
+                   
+                    <div class="grid ">
+                        <div class="col-12">
+                            <h1 style="text-align: center;">Temel Bilgiler</h1>
+                        </div>
+                        <div class ="lg:col-2"></div>
+                        <div class="col-12  lg:col-4">
+                        
+                            <div class="forms">
+
+                                <div class="p-inputgroup">
+                                        <span class="p-inputgroup-addon">
+											<i class="pi pi-user"></i>
+                                        </span>
+                                    <span class="p-float-label">
+                                        <input id="KullaniciAdi" type="text" pInputText/>
+                                        <label for="KullaniciAdi">Kullanıcı Adı</label>
+                                    </span>
+                                </div>
+
+                                <div class="p-inputgroup">
+                                        <span class="p-inputgroup-addon">
+											<i class="pi pi-user"></i>
+                                        </span>
+                                    <span class="p-float-label">
+                                        <input id="email" type="text" pInputText/>
+                                        <label for="email">E-Posta</label>
+                                    </span>
+                                </div>
+
+
+                                <div class="p-inputgroup">
+                                        <span class="p-inputgroup-addon">
+											<i class="pi pi-sign-in"></i>
+                                        </span>
+                                    <span class="p-float-label">
+                                        <input id="password" type="password" pInputText/>
+                                        <label for="password">Şifre</label>
+                                    </span>
+                                </div>
+
+                                <div class="p-inputgroup">
+                                    <span class="p-inputgroup-addon">
+                                        <i class="pi pi-sign-in"></i>
+                                    </span>
+                                    <span class="p-float-label">
+                                        <input id="password2" type="password" pInputText/>
+                                        <label for="password2">Şifre Tekrar</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  lg:col-4">
+                            <div class="forms">
+
+                                <div class="p-inputgroup">
+                                        <span class="p-inputgroup-addon">
+											<i class="pi pi-user"></i>
+                                        </span>
+                                    <span class="p-float-label">
+                                        <input id="Isim" type="text" pInputText/>
+                                        <label for="Isim">İsim</label>
+                                    </span>
+                                </div>
+
+                                <div class="p-inputgroup">
+                                        <span class="p-inputgroup-addon">
+											<i class="pi pi-user"></i>
+                                        </span>
+                                    <span class="p-float-label">
+                                        <input id="Soyisim" type="text" pInputText/>
+                                        <label for="Soyisim">Soyisim</label>
+                                    </span>
+                                </div>
+
+
+                                <div class="p-inputgroup">
+                                        <span class="p-inputgroup-addon">
+											<i class="pi pi-sign-in"></i>
+                                        </span>
+                                    <span class="p-float-label">
+                                        <input id="tel" type="text" pInputText/>
+                                        <label for="tel">Telefon</label>
+                                    </span>
+                                </div>
+
+                                <div class="p-inputgroup">
+                                    <span class="p-inputgroup-addon">
+                                        <i class="pi pi-sign-in"></i>
+                                    </span>
+                                    <span class="p-float-label">
+                                        <input id="Adres" type="text" pInputText/>
+                                        <label for="Adres">Şifre Tekrar</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-2"></div>
+                        <div class="col-12">
+                            <button pButton pRipple class="continue-button" type="button" label="Kayıt Ol" (click)="clickNext('tier')"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

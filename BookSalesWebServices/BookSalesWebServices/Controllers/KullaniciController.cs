@@ -1,8 +1,18 @@
 ﻿using BookSalesWebServices.APIModel;
 using BookSalesWebServices.Business;
 using BookSalesWebServices.DataAccess;
+using BookSalesWebServices.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BookSalesWebServices.Controllers
 {
@@ -10,21 +20,41 @@ namespace BookSalesWebServices.Controllers
     public class KullaniciController : ControllerBase
     {
         private readonly BookSalesDbContext _context;
+        private readonly ApplicationSettings _appSettings;
 
-        public KullaniciController(BookSalesDbContext context)
+        public KullaniciController(BookSalesDbContext context, IOptions<ApplicationSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpPost]
         [Route("Login")]
-        public KullaniciAPIModel Login()
+        public async Task<IActionResult> Login(LoginApiModel model)
         {
             string kullaniciAdi = HttpContext.User.Identity.Name;
             KullaniciBusiness kullaniciBusiness = new KullaniciBusiness(_context);
-            KullaniciAPIModel ret = kullaniciBusiness.GetKullanici(kullaniciAdi);
-            return ret;
+            KullaniciAPIModel ret = kullaniciBusiness.GetKullanici(model.KullaniciAdi, model.Sifre);
+
+            if (ret.genericResult.IsOK)
+            {
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserID",ret.KullaniciID.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Ok(new { token });
+            }
+            else
+                return BadRequest(new { message = "Username or password is incorrect." });
+
         }
 
         [HttpGet]
@@ -32,9 +62,8 @@ namespace BookSalesWebServices.Controllers
         public GenericResult CheckUserName(string kullaniciAdi)
         {
             KullaniciBusiness kullaniciBusiness = new KullaniciBusiness(_context);
-            KullaniciAPIModel ret = kullaniciBusiness.GetKullanici(kullaniciAdi);
-
-            return ret.genericResult;
+            GenericResult ret = kullaniciBusiness.CheckKullanici(kullaniciAdi);
+            return ret;
         }
 
         [HttpPost]
@@ -56,7 +85,7 @@ namespace BookSalesWebServices.Controllers
             }
 
             kullaniciAPIModel.UpdateModel = false;
-            kullaniciAPIModel.IdentityName= HttpContext.User.Identity.Name;
+            kullaniciAPIModel.IdentityName = HttpContext.User.Identity.Name;
             KullaniciBusiness kullaniciBusiness = new KullaniciBusiness(_context);
             ret = kullaniciBusiness.Save(kullaniciAPIModel);
 
@@ -117,7 +146,16 @@ namespace BookSalesWebServices.Controllers
             return ret;
         }
 
-
+        [HttpGet]
+        [Authorize]
+        [Route("GetProfil")]
+        public KullaniciAPIModel GetProfil()
+        {
+            string kullaniciID = User.Claims.First(c => c.Type == "UserID").Value;
+            KullaniciBusiness kullaniciBusiness = new KullaniciBusiness(_context);
+            KullaniciAPIModel ret = kullaniciBusiness.GetKullanici(Convert.ToInt32(kullaniciID));
+            return ret;
+        }
 
     }
 }

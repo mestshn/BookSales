@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "1jbKaz5beCRBsrSQLHYOq1qWbnAE5pP4BfCMu0EGB0Pi4SsnXQtwlojgZw1LsTn7Outwj0ps0XWI1+4+ZqZNCw==",
+  "dgSpecHash": "qViuzwlQ0J9QAvhlYqN8+2nC8c3I5yz3eUvfa0lXPiSe7HeBK37BTc42jgtkBuU+idN3FLo2wfsNOk3zBaHafQ==",
   "success": true,
-  "projectFilePath": "D:\\BookSalesWebServices\\BookSalesWebServices\\BookSalesWebServices.csproj",
+  "projectFilePath": "C:\\Work\\BookSalesWebServices\\BookSalesWebServices\\BookSalesWebServices.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Mesut\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\Mesut\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.10\\microsoft.aspnetcore.authentication.jwtbearer.3.1.10.nupkg.sha512",
     "C:\\Users\\Mesut\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Mesut\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",
     "C:\\Users\\Mesut\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.0.1\\microsoft.data.sqlclient.sni.runtime.2.0.1.nupkg.sha512",
