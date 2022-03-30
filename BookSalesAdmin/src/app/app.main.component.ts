@@ -2,6 +2,7 @@ import {Component, AfterViewInit, Renderer2, OnInit, OnDestroy} from '@angular/c
 import { MenuService } from './app.menu.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { AppComponent } from './app.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-main',
@@ -47,7 +48,7 @@ export class AppMainComponent implements AfterViewInit, OnInit, OnDestroy {
 
     inlineMenuClick: boolean;
 
-    constructor(public renderer: Renderer2, private menuService: MenuService, private primengConfig: PrimeNGConfig,
+    constructor(public renderer: Renderer2, private menuService: MenuService, private primengConfig: PrimeNGConfig, private router : Router,
                 public app: AppComponent) { }
 
     ngOnInit() {
@@ -125,6 +126,8 @@ export class AppMainComponent implements AfterViewInit, OnInit, OnDestroy {
         event.preventDefault();
     }
 
+
+
     onMenuClick($event) {
         this.menuClick = true;
 
@@ -166,6 +169,12 @@ export class AppMainComponent implements AfterViewInit, OnInit, OnDestroy {
 
         event.preventDefault();
     }
+
+    onLogoutClick() {
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('');
+    }
+
 
     onTopbarSubItemClick(event) {
         event.preventDefault();

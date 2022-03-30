@@ -3,8 +3,8 @@ import {SelectItem} from 'primeng/api';
 import {state, style, trigger} from '@angular/animations';
 
 @Component({
-    selector: 'app-wizard',
-    templateUrl: './app.wizard.component.html',
+    selector: 'app-register',
+    templateUrl: './app.register.component.html',
     animations: [
         trigger('tabBar', [
             state('register', style({
@@ -14,7 +14,7 @@ import {state, style, trigger} from '@angular/animations';
         ])
     ]
 })
-export class AppWizardComponent {
+export class AppRegisterComponent {
 
     activeTab = 'register';
 

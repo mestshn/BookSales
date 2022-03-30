@@ -14,7 +14,7 @@
 
   "ApplicationSettings": {
     "JWT_Secret": "1234567890123456",
-    "Clien_URL": "http://localhost:4200"
+    "Client_URL": "http://localhost:4200"
   }
 
 }

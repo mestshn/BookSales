@@ -1,6 +1,4 @@
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -101,11 +99,13 @@ import {AppNotfoundComponent} from './pages/app.notfound.component';
 import {AppErrorComponent} from './pages/app.error.component';
 import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
 import {AppLoginComponent} from './pages/app.login.component';
-import {AppWizardComponent} from './pages/app.wizard.component';
+import {AppRegisterComponent} from './pages/app.register.component';
 import {AppLandingComponent} from './pages/app.landing.component';
 
 import {EventService} from './demo/service/eventservice';
 import {ProductService} from './demo/service/productservice';
+
+import {UserService} from './pages/demo/service/userservice';
 
 import {MenuService} from './app.menu.service';
 import {AppBreadcrumbService} from './app.breadcrumb.service';
@@ -115,6 +115,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
+import { AuthInterceptor } from './pages/demo/auth/auth.interceptor';
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ToastrModule } from 'ngx-toastr';
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
     timeGridPlugin,
@@ -123,8 +128,12 @@ FullCalendarModule.registerPlugins([
 
 @NgModule({
     imports: [
+        ToastrModule.forRoot({
+            progressBar: true
+          }),
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         AppRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,
@@ -225,13 +234,18 @@ FullCalendarModule.registerPlugins([
         AppNotfoundComponent,
         AppErrorComponent,
         AppAccessdeniedComponent,
-        AppWizardComponent,
+        AppRegisterComponent,
         AppContactusComponent
     ],
     providers: [
         {
             provide: LocationStrategy, 
             useClass: HashLocationStrategy},
+            [UserService, {
+                provide: HTTP_INTERCEPTORS,
+                useClass: AuthInterceptor,
+                multi: true
+              }],
             EventService,
             ProductService,
             MenuService, 
